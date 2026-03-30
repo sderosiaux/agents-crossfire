@@ -204,8 +204,11 @@ Use this exact format:
 ## Position
 [one sentence — your stance]
 
-## Arguments
-[3-5 key points, grounded in your persona's methods]
+## Claims
+[3-5 numbered claims, grounded in your persona's methods]
+[C1] ...
+[C2] ...
+[C3] ...
 
 ## Assumptions
 [what you're taking for granted]
@@ -261,18 +264,19 @@ Use this format:
 # CLASH Round {N} — {participant} ({persona role})
 
 ## Response to {other participant}
-{react to their actual arguments — challenge, concede, or refine}
-{if they cited a statistic or fact, VERIFY IT — web search their source}
+{Reference specific claims by ID: [codex-C1], [gemini-C3], etc.
+For each claim you engage with, state: ADOPT, CHALLENGE, or IGNORE.
+If they cited a statistic or fact, VERIFY IT — web search their source.}
 
 ## What I was wrong about
-{name something from your previous position that you now see differently.
-Be specific. "Nothing" is not an acceptable answer after round 1.}
+{Name something from your previous position that you now see differently.
+Be specific. "Nothing" is not acceptable after round 1.}
 
 ## Updated position
-{where you stand now, after considering the other side}
+{Where you stand now. State new claims as numbered [C1], [C2], etc.}
 
 ## New evidence or angle
-{something not yet discussed, or "none — positions are stabilizing"}
+{Something not yet discussed, or "none — positions are stabilizing"}
 ```
 
 The orchestrator does NOT summarize tensions or pre-digest positions. The agent reads the raw files and forms its own view. This produces more authentic disagreement — the agent reacts to what was actually written, not to an orchestrator's interpretation.
@@ -284,29 +288,58 @@ After each round, the **orchestrator** reads all `02-clash-N-*.md` files and wri
 ```markdown
 # Assessment — Round {N}
 
-- Position shifts: {who moved, how}
-- New arguments: {any?}
-- Remaining tensions: {list}
-- Convergence: CONVERGING | DIVERGING | DEADLOCKED
+## Claim tracking
+| Claim | Author | Fate | By whom |
+|-------|--------|------|---------|
+| [codex-C1] | codex | ADOPTED / CHALLENGED / IGNORED | gemini, sonnet |
+| [gemini-C2] | gemini | ADOPTED / CHALLENGED / IGNORED | codex, sonnet |
+...
+
+## Divergence coefficient
+{challenged claims} / {total claims addressed} = X%
+(Higher = more genuine disagreement. Lower = polite convergence.)
+
+## Position shifts
+{who moved, how}
+
+## Remaining tensions
+{list}
+
+## Convergence state
+DIVERGING | NARROWING | CONVERGING | DEADLOCKED
 ```
 
-### 2.4 Convergence detection
+### 2.4 Mandatory pressure (Round 2+)
 
-**Minimum 3 rounds.** Always. Even if positions seem aligned after round 1, run at least 3 rounds — early agreement is often shallow, and forced continued debate surfaces hidden assumptions and cracks.
+Round 1 is honest — agents react freely. From Round 2 onward, every CLASH prompt includes two mandatory obligations:
 
-After round 3, stop when ALL true:
-- No participant changed position since last round
-- No new arguments surfaced
-- Remaining tensions produce diminishing returns
+```
+You MUST do both BEFORE developing your own position:
+1. Name the single weakest claim in the other participant's response.
+   Quote it by claim ID (e.g. [codex-C2]). Explain why it's the weakest.
+2. Pick one factual claim they made (statistic, benchmark, adoption number).
+   Web search the source. Report what you found — confirmed, unverifiable,
+   or contradicted.
+```
 
-If not converging after round 3, keep going until convergence or deadlock. Safety cap: 7 rounds.
+This forces real friction at the cheapest point (R2, before positions harden) without the synthetic disagreement of full attacker/defender mode.
 
-### 2.5 Mode switch: adversarial
+### 2.5 Convergence detection
 
-If a tension survives 2+ rounds without movement:
+After round 2, check the convergence state from the assessment:
+- `DIVERGING` → continue
+- `NARROWING` → one more round
+- `CONVERGING` → move to verdict
+- `DEADLOCKED` → escalate to adversarial mode (see 2.6)
 
-- Assign one participant as ATTACKER (persona shifts to "find every flaw")
-- Assign another as DEFENDER (persona shifts to "address every attack")
+Minimum 2 rounds of mandatory pressure. No maximum — keep going while positions are still moving. Safety cap: 7 rounds.
+
+### 2.6 Mode switch: adversarial (deadlock escalation)
+
+Only triggered when the convergence state is `DEADLOCKED` after 3+ rounds:
+
+- Assign one participant as ATTACKER (find every flaw)
+- Assign another as DEFENDER (address every attack)
 - One round, then Claude judges
 
 ---
@@ -315,9 +348,21 @@ If a tension survives 2+ rounds without movement:
 
 Output depth scales with debate richness. Write `verdict.md`.
 
-### Fast convergence (1-2 CLASH rounds or consensus from SCATTER)
+### Fast convergence (consensus from SCATTER or converged after round 2)
 
 ```markdown
+---
+debate-quality: high | medium | low
+divergence: high | medium | low
+provenance: clean | proxy-written | degraded
+mode: standard | pressured | adversarial
+rounds: {N}
+participants:
+  - name: {participant}
+    model: {model}
+    trust-level: primary | proxy
+---
+
 # Crossfire Verdict: {topic}
 Participants: {list w/ personas} | Rounds: {N} | Converged quickly
 
@@ -334,6 +379,18 @@ Participants: {list w/ personas} | Rounds: {N} | Converged quickly
 ### Rich debate (3+ rounds or surviving tensions)
 
 ```markdown
+---
+debate-quality: high | medium | low
+divergence: high | medium | low
+provenance: clean | proxy-written | degraded
+mode: standard | pressured | adversarial
+rounds: {N}
+participants:
+  - name: {participant}
+    model: {model}
+    trust-level: primary | proxy
+---
+
 # Crossfire Verdict: {topic}
 Participants: {list w/ personas} | Rounds: {N} | Status: {converged | max-rounds}
 
@@ -405,9 +462,12 @@ After writing `verdict.md`, concatenate all files into `transcript.md` for a sin
 4. **Parallel SCATTER** — single message, all Agent + Bash calls at once
 5. **Agents read each other's files** — CLASH agents read raw files from other participants, no pre-digested summaries
 6. **Orchestrator stays out** — the orchestrator identifies tensions in assessments but does NOT rewrite or filter participant output
-7. **Convergence stops the loop** — stop when positions freeze, don't run rounds for ceremony
-8. **Adaptive output** — short debates get short reports, rich debates get rich reports
-9. **Meta-insight required** — every VERDICT explains what the inter-model divergence means
+7. **Mandatory pressure from R2** — every agent must name the weakest opposing claim and verify one fact before arguing
+8. **Claim references** — SCATTER numbers claims [C1], [C2]. CLASH references them by ID. Assessment tracks fate (adopted/challenged/ignored)
+9. **Divergence coefficient** — every assessment computes challenged/total. Every verdict reports it. This is the number that justifies the tool's existence
+10. **Run metadata** — every verdict.md starts with YAML: divergence, provenance, mode, quality. The run is honest about itself before the user reads
+11. **Adaptive output** — short debates get short reports, rich debates get rich reports
+12. **Meta-insight required** — every VERDICT explains what the inter-model divergence means, grounded in claim tracking data
 10. **Persona travels with every call** — stateless CLIs get the full persona re-injected each round
 11. **Append-only** — never rewrite earlier files. History is the value
 12. **Minimum 2 participants** — a debate needs at least two voices
