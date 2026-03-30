@@ -1,5 +1,9 @@
 # agents-crossfire
 
+<p align="center">
+  <img src="assets/hero.png" alt="Crossfire — Debate. Clash. Converge." width="700">
+</p>
+
 Make your AI models argue with each other so you get a better answer.
 
 Instead of asking one model and hoping it's right, crossfire puts Claude, Codex, Gemini, and Ollama in the same room with conflicting personas. They research independently, read each other's arguments, and clash until positions stop moving. You get the debate transcript and a verdict.
