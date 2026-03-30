@@ -19,9 +19,9 @@ Or manually: copy `SKILL.md` to `~/.claude/commands/agents/debate.md`
 ## Use
 
 ```
-/agents:debate should we fine-tune or just use RAG for our domain? ask codex and gemini
-/agents:debate are AI coding agents ready to replace junior devs? use codex, gemini and sonnet
-/agents:debate MCP vs tool-use for agent integrations, ask ollama and codex
+/agents:crossfire should we fine-tune or just use RAG for our domain? ask codex and gemini
+/agents:crossfire are AI coding agents ready to replace junior devs? use codex, gemini and sonnet
+/agents:crossfire MCP vs tool-use for agent integrations, ask ollama and codex
 ```
 
 No flags. Claude parses the topic and participants from your sentence. If you don't name anyone, it defaults to Claude + Codex.
