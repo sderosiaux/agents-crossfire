@@ -96,15 +96,6 @@ crossfire-2026-03-29-finetune-vs-rag/
 
 Each model writes its own markdown file. The orchestrator never rewrites participant output.
 
-## Learnings from testing
-
-A few things we found running real debates:
-
-- Gemini with `--yolo` will simulate the entire debate by itself if you don't explicitly say "write ONLY your own file." The skill now includes negative constraints in every prompt.
-- `--bare` on Claude blocks OAuth auth. Don't use it.
-- Codex consistently does the most research (8 web searches in one debate). Gemini reasons from training data. Claude finds architectural edge cases. The model diversity is real.
-- With 3 participants, one round often produces a 2-vs-1 coalition that is stronger signal than any single model's opinion.
-- Minimum 3 rounds matters. Early agreement is shallow.
 
 ## Inspired by
 
