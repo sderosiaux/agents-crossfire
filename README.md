@@ -15,9 +15,9 @@ Or manually: copy `SKILL.md` to `~/.claude/commands/agents/debate.md`
 ## Use
 
 ```
-/agents:debate is Kafka still the right choice, or has Redpanda won? ask codex and gemini
-/agents:debate should we use event sourcing? use codex, gemini and sonnet
-/agents:debate best database for our use case, ask ollama and codex
+/agents:debate should we fine-tune or just use RAG for our domain? ask codex and gemini
+/agents:debate are AI coding agents ready to replace junior devs? use codex, gemini and sonnet
+/agents:debate MCP vs tool-use for agent integrations, ask ollama and codex
 ```
 
 No flags. Claude parses the topic and participants from your sentence. If you don't name anyone, it defaults to Claude + Codex.
@@ -33,25 +33,29 @@ Every response is written to disk by the model itself. Unfiltered, unedited. The
 
 ## What the output looks like
 
-From a real Kafka vs Redpanda debate (Codex vs Gemini):
+From a "fine-tune vs RAG" debate (Codex vs Gemini vs Sonnet):
 
 ```
-TENSIONS:
-1. Codex verified Redpanda 25.2 still lacks per-user quotas,
-   HTTP Proxy CRUD, multi-SCRAM per user. Gemini called these
-   "transient gaps." Codex: "Transient for how many years?"
+COALITION MAP:
+Codex + Sonnet aligned: "RAG first, fine-tune only when retrieval
+hits a wall." Gemini isolated: "Fine-tuning is underrated because
+teams stop at naive RAG and never push past the retrieval ceiling."
 
-2. Gemini argued "Total Cost of Cognition" -- JVM overhead is
-   a hidden tax. Codex countered with "Total Cost of Exceptions"
-   -- every compat gap creates unbounded org debt in humans.
+KEY EXCHANGE:
+Sonnet found that OpenAI's own fine-tuning docs recommend RAG as
+the first approach. Codex verified: fine-tuning GPT-4 costs $25/M
+tokens training, requires 50-100 quality examples minimum, and the
+model can still hallucinate. Gemini countered: "You're comparing
+bad fine-tuning to good RAG. A domain-tuned model with 500 examples
+eliminates the retrieval latency and context window tax entirely."
 
-VERDICT: Kafka is still the default for most orgs. Redpanda is
-a legitimate bet for greenfield with a strong platform team.
-The question "has Redpanda won?" is premature. The question
-"is Redpanda credible?" was settled: yes, with caveats.
+VERDICT: Start with RAG. Fine-tune when you've hit a measurable
+retrieval ceiling and have the labeled data to prove it. The 2-vs-1
+coalition held: fine-tuning is a second-stage optimization, not a
+starting point.
 ```
 
-Codex ran 8 web searches and checked actual docs. Gemini argued from market trends. The disagreement mapped to a real split: "what should I deploy tonight" vs "what should I plan for 2029."
+Codex checked pricing docs and fine-tuning guides. Sonnet found API deprecation timelines. Gemini argued from ML research papers. Three models, three kinds of evidence.
 
 ## Why different models, not different personas
 
@@ -77,12 +81,14 @@ All configured for autonomous tool use (web search, bash, file reads, git clone)
 Each debate creates a folder:
 
 ```
-crossfire-2026-03-29-kafka-vs-redpanda/
+crossfire-2026-03-29-finetune-vs-rag/
   00-setup.md              # personas (orchestrator)
   01-scatter-codex.md      # written by Codex
   01-scatter-gemini.md     # written by Gemini
+  01-scatter-sonnet.md     # written by Sonnet
   02-clash-1-codex.md      # written by Codex
   02-clash-1-gemini.md     # written by Gemini
+  02-clash-1-sonnet.md     # written by Sonnet
   03-assessment-1.md       # tension tracking (orchestrator)
   verdict.md               # synthesis + coalition map
   transcript.md            # full log
