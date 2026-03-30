@@ -155,9 +155,11 @@ dismiss it. If your persona would demand evidence, demand it.
 
 You have full tool access: web search, bash, file reads, git clone.
 You MUST use web search or file reads at least twice to verify or
-support your claims. Arguments without evidence will be challenged.
-Do NOT rely solely on your training data — check the actual docs,
-repos, or data before making factual claims.
+support your claims. Unsourced factual claims (statistics, adoption
+numbers, benchmarks) WILL be challenged and debunked by other
+participants. If you cite a number, link the source.
+If another participant cited a number, VERIFY IT before accepting.
+Do NOT rely solely on your training data.
 
 IMPORTANT: You are ONLY {participant}. Do NOT write responses for
 other participants. Write ONLY your own file.
@@ -260,6 +262,11 @@ Use this format:
 
 ## Response to {other participant}
 {react to their actual arguments — challenge, concede, or refine}
+{if they cited a statistic or fact, VERIFY IT — web search their source}
+
+## What I was wrong about
+{name something from your previous position that you now see differently.
+Be specific. "Nothing" is not an acceptable answer after round 1.}
 
 ## Updated position
 {where you stand now, after considering the other side}
@@ -342,6 +349,18 @@ Participants: {list w/ personas} | Rounds: {N} | Status: {converged | max-rounds
 
 ## Key exchanges
 {2-3 most revealing moments — quotes or paraphrases}
+
+## Question reframing
+{Did the debate reframe the original question? If the participants
+independently concluded the question was wrong, name the better
+question they converged on. This reframing is often the highest-value
+output of the entire debate.}
+
+## Emergent framework
+{Did the participants converge on a shared model, diagram, or taxonomy
+that didn't exist in any individual SCATTER response? If so, present it.
+Frameworks that emerge from adversarial debate are more trustworthy
+than frameworks from a single model.}
 
 ## Coalition map (3+ participants)
 {Who aligned with whom, and why? A 2-vs-1 pattern where two models
