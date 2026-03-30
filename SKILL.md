@@ -250,8 +250,12 @@ Prompt per participant:
 ```
 Read your persona from {debate_dir}/00-setup.md — you are {participant name}.
 
-This is CLASH round {N}. Read the other participant's previous response(s):
-{list of files to read, e.g. "01-scatter-codex.md" or "02-clash-1-codex.md"}
+This is CLASH round {N}. Read:
+- Each participant's LATEST response: {e.g. 02-clash-{N-1}-codex.md, 02-clash-{N-1}-gemini.md}
+- The orchestrator's latest assessment: {e.g. 03-assessment-{N-1}.md}
+  (contains claim tracking, divergence coefficient, and position shift summary)
+
+The assessment carries the debate history — you don't need to re-read earlier rounds.
 
 React to what you read. Challenge, concede, or refine. Stay in character.
 Use any tools (web search, bash, git clone) to verify or counter their claims.
