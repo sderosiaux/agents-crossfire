@@ -55,7 +55,7 @@ coalition held: fine-tuning is a second-stage optimization, not a
 starting point.
 ```
 
-Codex checked pricing docs and fine-tuning guides. Sonnet found API deprecation timelines. Gemini argued from ML research papers. Three models, three kinds of evidence.
+Codex web-searched OpenAI's pricing page and fine-tuning docs. Sonnet read the API reference and found context window limits that break naive RAG at scale. Gemini cited ML papers on domain adaptation. Same question, three different research methods, better answer than any one model alone.
 
 ## Why different models, not different personas
 
